@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  set-release-note:
+    name: Set Release Note
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: npm install simple-git
+      - uses: actions/github-script@v3
+        id: create-release-note
+        with:
+          github-token: ${{secret.GITHUB_TOKEN}}
+          script: |
+            const script = require(`${process.env.GITHUB_WORKSPACE}/.github/script/prs.js`)
+            const path = `${process.env.GITHUB_WORKSPACE}`
+            return await script({github, path})
+          result-encoding: string
+      - name: Update Releasing Note
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{steps.create-release-note.outputs.result}}
+        env:
+          GITHUB_TOKEN: ${{ secret.GITHUB_TOKEN }}
+  newrelic:
+    runs-on: ubuntu-latest
+    name: New Relic
+    steps:
+      - name: Set Release Version from Tag
+        run: echo "RELEASE_VERSION=${{ GITHUB_REF:10 }}" >> $GITHUB_ENV
+
+      - name: Create NewRelic Deployment marker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID }}
+          revision: "${{ env.RELEASE_VERSION }}"
