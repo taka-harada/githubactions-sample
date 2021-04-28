@@ -20,11 +20,11 @@ module.exports = async ({github, path}) => {
             title: d.title,
             url: d.html_url,
             number: d.number,
-            user: d.user,
+            author: d.head.user.login,
             merge_commit_sha: d.merge_commit_sha,
         }
     });
     return res.filter(d => logs.all.some(l => l.hash === d.merge_commit_sha))
-        .map(pr => `- [#${pr.number}](${pr.url}) ${pr.title} Merged by ${pr.user}`)
+        .map(pr => `- [#${pr.number}](${pr.url}) ${pr.title} Merged by ${pr.author}`)
         .join('\n');
 }
