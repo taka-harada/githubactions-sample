@@ -12,7 +12,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.1.0
     - name: Deploy [Staging]
-      run: echo "Execute the deproy script here."
+      run: echo "Execute the deploy script here for Staging."
       if: contains(github.ref, 'deploy-stg')
     - name: Deploy [Prod]
+      run: echo "Execute the deploy script here for Production"
       if: contains(github.ref, 'deploy-prod')
