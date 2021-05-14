@@ -4,11 +4,8 @@ on:
   push:
     tags:
       - 'v*'
-  pull_request:
-    branches:
-      - master
 
-jobs:
+      jobs:
   set-release-note:
     name: Set Release Note
     runs-on: ubuntu-latest
