@@ -24,7 +24,6 @@ jobs:
         id: create-release-note
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          release_name: ${{ steps.get_date.outputs.DATE }}
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/script/prs.js`)
             const path = `${process.env.GITHUB_WORKSPACE}`
@@ -33,6 +32,7 @@ jobs:
       - name: Update Releasing Note
         uses: softprops/action-gh-release@v1
         with:
+          name: Release ${{ steps.get_date.outputs.DATE }}
           body: ${{steps.create-release-note.outputs.result}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
