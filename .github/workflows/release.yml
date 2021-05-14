@@ -4,8 +4,7 @@ on:
   push:
     tags:
       - 'v*'
-
-      jobs:
+jobs:
   set-release-note:
     name: Set Release Note
     runs-on: ubuntu-latest
