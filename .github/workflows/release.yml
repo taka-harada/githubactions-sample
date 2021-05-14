@@ -20,7 +20,7 @@ jobs:
         id: create-release-note
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          name: Release ${{ steps.date.outputs.date }}
+          release_name: Release ${{ steps.date.outputs.date }}
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/script/prs.js`)
             const path = `${process.env.GITHUB_WORKSPACE}`
