@@ -8,3 +8,4 @@ alert("trigger are pushing tag and creating PR to master");
 alert("Customize the title of Release Note");
 alert("8th");
 alert("9th");
+alert("10th");
