@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'release*'
 jobs:
   set-release-note:
     name: Set Release Note
@@ -12,10 +12,6 @@ jobs:
       - name: Get current date
         id: get_date
         run: echo "::set-output name=DATE::$(date +'%Y-%m-%d')"
-      - name: Test
-        run: echo $RELEASE_NAME
-        env:
-          RELEASE_NAME: ${{ steps.get_date.outputs.DATE }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
