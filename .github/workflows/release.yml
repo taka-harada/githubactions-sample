@@ -9,9 +9,13 @@ jobs:
     name: Set Release Note
     runs-on: ubuntu-latest
     steps:
-      - name: Get current data
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Get current date
+        id: get_date
+        run: echo "::set-output name=DATE::$(date +'%Y-%m-%d')"
+      - name: Test
+        run: echo $RELEASE_NAME
+        env:
+          RELEASE_NAME: ${{ steps.get_date.outputs.DATE }}
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -20,7 +24,7 @@ jobs:
         id: create-release-note
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          release_name: Release ${{ steps.date.outputs.date }}
+          release_name: ${{ steps.get_date.outputs.DATE }}
           script: |
             const script = require(`${process.env.GITHUB_WORKSPACE}/.github/script/prs.js`)
             const path = `${process.env.GITHUB_WORKSPACE}`
