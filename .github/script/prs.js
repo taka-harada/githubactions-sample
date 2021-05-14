@@ -2,7 +2,8 @@ const simpleGit = require('simple-git');
 
 module.exports = async ({github, path}) => {
     const git = simpleGit(path);
-    const logs = await git.tags('-l "release*"', { '--sort': '-v:refname' })
+    const targetTags = git.tags('-l "release*"')
+    const logs = await targetTags({ '--sort': '-v:refname' })
         .then((t) => {
             const tags = t.all.slice(0, 2);
             return git.log({ 'from': tags[0], 'to': tags[1] })
